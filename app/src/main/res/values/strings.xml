@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Spotitest</string>
+    <string name="get">CHARGER MUSIQUE</string>
+    <string name="def">Musique</string>
+    <string name="par">paroles</string>
+</resources>
