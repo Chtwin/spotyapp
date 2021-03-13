@@ -19,6 +19,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String CLIENT_ID = "adcfa4bfab734c7aa2bbffb1c63805bd";
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private SpotifyAppRemote mSpotifyAppRemote;
     private String artist;
     private String music;
+    private TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,31 +41,7 @@ public class MainActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         delegate.applyDayNight();
         // End
-        final TextView text = findViewById(R.id.text);
-        final Button button = findViewById(R.id.get);
-        button.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SetTextI18n")
-            public void onClick(View v) {
-                mSpotifyAppRemote.getPlayerApi()
-                        .subscribeToPlayerState()
-                        .setEventCallback(playerState -> {
-                            final Track track = playerState.track;
-                            if (track != null) {
-                                Log.d("MainActivity", track.name + " by " + track.artist.name);
-                                artist = track.artist.name;
-                                music = track.name;
-                            }
-                        });
-                // Gabiboux
-                if (artist != null)
-                {
-                    String token = "_ubTsw2W0EC_ER_II73nI8er_Gdi0W65o3ITAP-TzxCLMe4FNUWP9nYaapeaark1";
-                    String url = "https://api.genius.com/search?access_token="+token+"&q="+artist+"%20"+music;
-                    LyricsURL task = new LyricsURL(MainActivity.this);
-                    task.execute(url, null, null);
-                }
-            }
-        });
+        text = findViewById(R.id.text);
     }
 
     @Override
@@ -79,21 +58,33 @@ public class MainActivity extends AppCompatActivity {
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                         mSpotifyAppRemote = spotifyAppRemote;
                         Log.d("MainActivity", "Connected! Yay!");
-
-                        // Now you can start interacting with App Remote
                         connected();
                     }
                     @Override
                     public void onFailure(Throwable throwable) {
                         Log.e("MainActivity", throwable.getMessage(), throwable);
-
-                        // Something went wrong when attempting to connect! Handle errors here
                     }
                 });
     }
 
+    @SuppressLint("SetTextI18n")
     private void connected() {
-        // Then we will write some more code here.
+        mSpotifyAppRemote.getPlayerApi()
+                .subscribeToPlayerState()
+                .setEventCallback(playerState -> {
+                    final Track track = playerState.track;
+                    if (track != null) {
+                        Log.d("MainActivity", track.name + " by " + track.artist.name);
+                        artist = track.artist.name;
+                        music = track.name;
+                        Log.i("EZ", "dddddddddddddddddd");
+                        String token = "_ubTsw2W0EC_ER_II73nI8er_Gdi0W65o3ITAP-TzxCLMe4FNUWP9nYaapeaark1";
+                        String url = "https://api.genius.com/search?access_token="+token+"&q="+artist+"%20"+music;
+                        LyricsURL task = new LyricsURL(MainActivity.this);
+                        task.execute(url, null, null);
+                        text.setText(music + " de " + artist);
+                    }
+                });
     }
 
     @Override
