@@ -7,23 +7,15 @@ import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 
-import com.spotify.protocol.client.Subscription;
 import com.spotify.protocol.types.Image;
-import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         // End
         text = findViewById(R.id.text);
         img = findViewById(R.id.cover);
-        art = findViewById(R.id.artist);
-        album = findViewById(R.id.album);
+        art = findViewById(R.id.album);
+        album = findViewById(R.id.artist);
     }
 
     @Override
