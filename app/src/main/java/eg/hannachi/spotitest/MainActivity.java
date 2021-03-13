@@ -56,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
                 // Gabiboux
                 if (artist != null)
                 {
-                    Lyrics task = new Lyrics(MainActivity.this);
-                    String url = "https://api.lyrics.ovh/v1/"+artist+"/"+music+"";
+                    String token = "_ubTsw2W0EC_ER_II73nI8er_Gdi0W65o3ITAP-TzxCLMe4FNUWP9nYaapeaark1";
+                    String url = "https://api.genius.com/search?access_token="+token+"&q="+artist+"%20"+music;
+                    LyricsURL task = new LyricsURL(MainActivity.this);
                     task.execute(url, null, null);
                 }
             }

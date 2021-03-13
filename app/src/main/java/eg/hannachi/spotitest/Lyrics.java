@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,8 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class Lyrics extends AsyncTask<String, Void, JSONObject> {
-
+public class Lyrics extends AsyncTask<String, Void, String> {
     private AppCompatActivity app;
     ArrayList<String> list = new ArrayList<String>();
 
@@ -28,9 +28,9 @@ public class Lyrics extends AsyncTask<String, Void, JSONObject> {
     }
 
     @Override
-    protected JSONObject doInBackground(String... strings) {
+    protected String doInBackground(String... strings) {
         URL url = null;
-        JSONObject j = null;
+        String j = null;
         try {
             url = new URL(strings[0]);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -38,61 +38,111 @@ public class Lyrics extends AsyncTask<String, Void, JSONObject> {
             try {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 j = readStream(in);
-                Log.i("JJJ3", j.getString("lyrics"));
-                //TextView parolefield = app.findViewById(R.id.parole);
-                //parolefield.setText(j.getString("lyrics"));
-                //run(j);
-            } catch (JSONException e) {
-                e.printStackTrace();
+                //Log.i("JJJ3", j.toString());
             } finally {
                 urlConnection.disconnect();
             }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return j;
     }
 
-    /*public void run(JSONObject j) {
-        app.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView parolefield = app.findViewById(R.id.parole);
-                try {
-                    parolefield.setText(j.getString("lyrics"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-    }*/
-
     @Override
-    protected void onPostExecute(JSONObject jsonObject) {
-        super.onPostExecute(jsonObject);
+    protected void onPostExecute(String j) {
+        super.onPostExecute(j);
         TextView parolefield = app.findViewById(R.id.parole);
-        try {
-            parolefield.setText(jsonObject.getString("lyrics"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+        parolefield.setText(j);
     }
 
-    private JSONObject readStream(InputStream is) throws IOException {
-        try{
-            ByteArrayOutputStream bo = new ByteArrayOutputStream();
-            int i = is.read();
-            while (i != -1) {
-                bo.write(i);
-                i = is.read();
-            }
-            Log.i("JJJ2", bo.toString());
-            return new JSONObject(bo.toString());
-        } catch (JSONException e) {
-            return new JSONObject();
+    private String readStream(InputStream is) throws IOException {
+        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+        int i = is.read();
+        while (i != -1) {
+            bo.write(i);
+            i = is.read();
         }
-    }
+        String s_original = bo.toString(); //tt le code html
+        //on garde que la balise lyrics
+        Log.i("JJJ2 avant ", ""+s_original.length());
+        int index = s_original.indexOf("<div class=\"lyrics\">")-1;
+        String s1 = s_original.substring(index);
+        int index2= s1.indexOf("</div>")-1;
+        String s2 = s1.substring(0, index2);
 
+        //on garde que le paragraphe p qui a les paroles
+        index = s_original.indexOf("<p>")+3;
+        s1 = s_original.substring(index);
+        index2= s1.indexOf("</p>")-1;
+        s2 = s1.substring(0, index2);
+        //Log.i("JJJ2 pendant <p>", " "+ s2);
+
+        //retirer les <a href=>
+        while (s2.contains("<a href=")){
+            index = s2.indexOf("<a href=");
+            s1 = s2.substring(index);
+            index2= s1.indexOf(">")+1;
+            String s3 = s1.substring(0, index2);
+            s2 = s2.replace(s3, "\n");
+            //Log.i("JJJ2 pendant <a href :", " "+ s2.length());
+        }
+        //retirer les <br>
+        while (s2.contains("<br>")){
+            index = s2.indexOf("<br>");
+            s1 = s2.substring(index);
+            index2 = s1.indexOf(">")+1;
+            String s3 = s1.substring(0, index2);
+            s2 = s2.replace(s3, "\n");
+            //Log.i("JJJ2 pendant <br> :", " "+ s2.length());
+        }
+        //retirer les </a>
+        while (s2.contains("</a>")){
+            index = s2.indexOf("</a>");
+            s1 = s2.substring(index);
+            index2 = s1.indexOf(">")+1;
+            String s3 = s1.substring(0, index2);
+            s2 = s2.replace(s3, "");
+            //Log.i("JJJ2 pendant </a> :", " "+ s2.length());
+        }
+        //retirer les <i>
+        while (s2.contains("<i>")){
+            index = s2.indexOf("<i");
+            s1 = s2.substring(index);
+            index2 = s1.indexOf(">")+1;
+            String s3 = s1.substring(0, index2);
+            s2 = s2.replace(s3, "");
+            //Log.i("JJJ2 pendant <i> :", " "+ s2.length());
+        }
+        //retirer les </i>
+        while (s2.contains("</i>")){
+            index = s2.indexOf("</i>");
+            s1 = s2.substring(index);
+            index2 = s1.indexOf(">")+1;
+            String s3 = s1.substring(0, index2);
+            s2 = s2.replace(s3, "");
+            //Log.i("JJJ2 pendant </i> :", " "+ s2.length());
+        }
+        while (s2.contains("</b>")){
+            index = s2.indexOf("</b>");
+            s1 = s2.substring(index);
+            index2 = s1.indexOf(">")+1;
+            String s3 = s1.substring(0, index2);
+            s2 = s2.replace(s3, "");
+            //Log.i("JJJ2 pendant </i> :", " "+ s2.length());
+        }
+        while (s2.contains("<b>")){
+            index = s2.indexOf("<b>");
+            s1 = s2.substring(index);
+            index2 = s1.indexOf(">")+1;
+            String s3 = s1.substring(0, index2);
+            s2 = s2.replace(s3, "");
+            //Log.i("JJJ2 pendant </i> :", " "+ s2.length());
+        }
+        //retirer les >
+        //exactement nos paroles
+        //Log.i("JJJ2 fin", " "+ s2);
+        return s2;
+    }
 }
