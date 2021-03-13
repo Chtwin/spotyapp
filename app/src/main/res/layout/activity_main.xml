@@ -24,6 +24,13 @@
             android:textColorLink="#009688"
             android:textStyle="bold" />
 
+        <ImageView
+            android:id="@+id/cover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/cover"
+            tools:srcCompat="@tools:sample/avatars" />
+
         <TextView
             android:id="@+id/parole"
             android:layout_width="match_parent"

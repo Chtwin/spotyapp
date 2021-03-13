@@ -8,6 +8,7 @@ import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 
 import com.spotify.protocol.client.Subscription;
+import com.spotify.protocol.types.Image;
 import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 
@@ -17,9 +18,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private String artist;
     private String music;
     private TextView text;
+    private ImageView img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         delegate.applyDayNight();
         // End
         text = findViewById(R.id.text);
+        img = findViewById(R.id.cover);
     }
 
     @Override
@@ -77,12 +83,19 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
                         artist = track.artist.name;
                         music = track.name;
-                        Log.i("EZ", "dddddddddddddddddd");
                         String token = "_ubTsw2W0EC_ER_II73nI8er_Gdi0W65o3ITAP-TzxCLMe4FNUWP9nYaapeaark1";
                         String url = "https://api.genius.com/search?access_token="+token+"&q="+artist+"%20"+music;
+                        Log.i("ez", track.imageUri.toString());
                         LyricsURL task = new LyricsURL(MainActivity.this);
                         task.execute(url, null, null);
                         text.setText(music + " de " + artist);
+                        mSpotifyAppRemote
+                                .getImagesApi()
+                                .getImage(track.imageUri, Image.Dimension.LARGE)
+                                .setResultCallback(
+                                        bitmap -> {
+                                            img.setImageBitmap(bitmap);
+                                        });
                     }
                 });
     }
