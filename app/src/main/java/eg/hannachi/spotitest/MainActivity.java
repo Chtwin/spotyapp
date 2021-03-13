@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String CLIENT_ID = "adcfa4bfab734c7aa2bbffb1c63805bd";
     private static final String REDIRECT_URI = "http://example.com/callback/";
     private SpotifyAppRemote mSpotifyAppRemote;
-    private String artist;
-    private String music;
     private TextView text;
     private ImageView img;
+    private TextView art;
+    private TextView album;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         // End
         text = findViewById(R.id.text);
         img = findViewById(R.id.cover);
+        art = findViewById(R.id.artist);
+        album = findViewById(R.id.album);
     }
 
     @Override
@@ -81,14 +83,14 @@ public class MainActivity extends AppCompatActivity {
                     final Track track = playerState.track;
                     if (track != null) {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
-                        artist = track.artist.name;
-                        music = track.name;
                         String token = "_ubTsw2W0EC_ER_II73nI8er_Gdi0W65o3ITAP-TzxCLMe4FNUWP9nYaapeaark1";
-                        String url = "https://api.genius.com/search?access_token="+token+"&q="+artist+"%20"+music;
+                        String url = "https://api.genius.com/search?access_token="+token+"&q="+track.artist.name+"%20"+track.name;
                         Log.i("ez", track.imageUri.toString());
                         LyricsURL task = new LyricsURL(MainActivity.this);
                         task.execute(url, null, null);
-                        text.setText(music + " de " + artist);
+                        text.setText(track.name);
+                        art.setText(track.artist.name);
+                        album.setText(track.album.name);
                         mSpotifyAppRemote
                                 .getImagesApi()
                                 .getImage(track.imageUri, Image.Dimension.LARGE)
