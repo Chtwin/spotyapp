@@ -23,7 +23,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String CLIENT_ID = "adcfa4bfab734c7aa2bbffb1c63805bd";
+    private static final String CLIENT_ID = "adcfa4bfab734c7aa2bbffb1c63805bd"; //anis
+    //private static final String CLIENT_ID = "bc064d26c0c44116be4f4b49da7f0118"; //gab
     private static final String REDIRECT_URI = "http://example.com/callback/";
     private SpotifyAppRemote mSpotifyAppRemote;
     private TextView text;
@@ -119,10 +120,17 @@ public class MainActivity extends AppCompatActivity {
                             titre = titre.replace(s3, "");
                             //Log.i("JJJ sans - :", " "+ titre);
                         }
+                        //artists(track.artists);
                         Log.d("MainActivity", titre + " by " + track.artist.name);
                         String token = "_ubTsw2W0EC_ER_II73nI8er_Gdi0W65o3ITAP-TzxCLMe4FNUWP9nYaapeaark1";
-                        String url = "https://api.genius.com/search?access_token="+token+"&q="+track.artist.name+"%20"+titre;
-                        //artists(track.artists)
+                        String url = "";
+                        if (track.artists.size() > 1){
+                            Log.d("artistes", "plusieurs");
+                            url = "https://api.genius.com/search?access_token="+token+"&q="+titre+" "+track.artists.get(0).name+" "+track.artists.get(1).name;
+                        }
+                        else{
+                            url = "https://api.genius.com/search?access_token="+token+"&q="+titre+" "+track.artist.name;
+                        }
                         LyricsURL task = new LyricsURL(MainActivity.this);
                         task.execute(url, null, null);
                         text.setText(track.name);
@@ -143,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
         StringBuilder s = new StringBuilder();
         for(int i = 0; i < artists.size(); i++){
             s.append(artists.get(i).name).append(" ");
+            Log.d("artistes", artists.get(i).name);
         }
         return s.toString();
     }

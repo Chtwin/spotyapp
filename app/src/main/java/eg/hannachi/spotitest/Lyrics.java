@@ -75,7 +75,7 @@ public class Lyrics extends AsyncTask<String, Void, String> {
         //on garde que le paragraphe p qui a les paroles
         index = s_original.indexOf("<p>")+3;
         s1 = s_original.substring(index);
-        index2= s1.indexOf("</p>")-1;
+        index2= s1.indexOf("</p>");
         s2 = s1.substring(0, index2);
         //Log.i("JJJ2 pendant <p>", " "+ s2);
 
