@@ -7,6 +7,7 @@ import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 
+import com.spotify.protocol.types.Artist;
 import com.spotify.protocol.types.Image;
 import com.spotify.protocol.types.Track;
 
@@ -15,7 +16,10 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,10 +78,51 @@ public class MainActivity extends AppCompatActivity {
                 .setEventCallback(playerState -> {
                     final Track track = playerState.track;
                     if (track != null) {
-                        Log.d("MainActivity", track.name + " by " + track.artist.name);
+                        String titre =  track.name;
+                        while (titre.contains("(")){
+                            int index = titre.indexOf("(")-1; //F
+                            String s1 = titre.substring(index);
+                            int index2 = s1.indexOf(")")+1;
+                            String s3 = s1.substring(0, index2);
+                            titre = titre.replace(s3, "");
+                            //Log.i("JJJ sans feat :", " "+ titre);
+                        }
+                        while (titre.contains("[")){
+                            int index = titre.indexOf("[")-1; //F
+                            String s1 = titre.substring(index);
+                            int index2 = s1.indexOf("]")+1;
+                            String s3 = s1.substring(0, index2);
+                            titre = titre.replace(s3, "");
+                            //Log.i("JJJ sans feat :", " "+ titre);
+                        }
+                        if (titre.contains("remix")){
+                            int index = titre.indexOf("r")-1;
+                            String s1 = titre.substring(index);
+                            int index2 = s1.indexOf("x")+1;
+                            String s3 = s1.substring(0, index2);
+                            titre = titre.replace(s3, "");
+                            //Log.i("JJJ sans remix :", " "+ titre);
+                        }
+                        if (titre.contains("Remaster")){
+                            int index = titre.indexOf("-");
+                            String s1 = titre.substring(index);
+                            //int index2 = s1.indexOf(")")+1;
+                            String s3 = s1.substring(0);
+                            titre = titre.replace(s3, "");
+                            //Log.i("JJJ sans Remaster :", " "+ titre);
+                        }
+                        if (titre.contains("-")){
+                            int index = titre.indexOf("-");
+                            String s1 = titre.substring(index);
+                            //int index2 = s1.indexOf(")")+1;
+                            String s3 = s1.substring(0);
+                            titre = titre.replace(s3, "");
+                            //Log.i("JJJ sans - :", " "+ titre);
+                        }
+                        Log.d("MainActivity", titre + " by " + track.artist.name);
                         String token = "_ubTsw2W0EC_ER_II73nI8er_Gdi0W65o3ITAP-TzxCLMe4FNUWP9nYaapeaark1";
-                        String url = "https://api.genius.com/search?access_token="+token+"&q="+track.artist.name+"%20"+track.name;
-                        Log.i("ez", track.imageUri.toString());
+                        String url = "https://api.genius.com/search?access_token="+token+"&q="+track.artist.name+"%20"+titre;
+                        //artists(track.artists)
                         LyricsURL task = new LyricsURL(MainActivity.this);
                         task.execute(url, null, null);
                         text.setText(track.name);
@@ -92,6 +137,14 @@ public class MainActivity extends AppCompatActivity {
                                         });
                     }
                 });
+    }
+
+    private String artists(List<Artist> artists){
+        StringBuilder s = new StringBuilder();
+        for(int i = 0; i < artists.size(); i++){
+            s.append(artists.get(i).name).append(" ");
+        }
+        return s.toString();
     }
 
     @Override

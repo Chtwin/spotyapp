@@ -79,6 +79,15 @@ public class Lyrics extends AsyncTask<String, Void, String> {
         s2 = s1.substring(0, index2);
         //Log.i("JJJ2 pendant <p>", " "+ s2);
 
+        if (s2.contains("[Paroles")){
+            index = s2.indexOf("[Paroles");
+            s1 = s2.substring(index);
+            index2 = s1.indexOf("]")+1;
+            String s3 = s1.substring(0, index2);
+            s2 = s2.replace(s3, "");
+            //Log.i("JJJ2 pendant </i> :", " "+ s2.length());
+        }
+
         //retirer les <a href=>
         while (s2.contains("<a href=")){
             index = s2.indexOf("<a href=");
