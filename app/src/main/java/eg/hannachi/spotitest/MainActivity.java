@@ -13,13 +13,19 @@ import com.spotify.protocol.types.Track;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView img;
     private TextView art;
     private TextView album;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         img = findViewById(R.id.cover);
         art = findViewById(R.id.album);
         album = findViewById(R.id.artist);
+        Button act = findViewById(R.id.act);
+        act.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), Activity2.class)));
     }
 
     @Override
@@ -79,48 +88,8 @@ public class MainActivity extends AppCompatActivity {
                 .setEventCallback(playerState -> {
                     final Track track = playerState.track;
                     if (track != null) {
-                        String titre =  track.name;
-                        while (titre.contains("(")){
-                            int index = titre.indexOf("(")-1; //F
-                            String s1 = titre.substring(index);
-                            int index2 = s1.indexOf(")")+1;
-                            String s3 = s1.substring(0, index2);
-                            titre = titre.replace(s3, "");
-                            //Log.i("JJJ sans feat :", " "+ titre);
-                        }
-                        while (titre.contains("[")){
-                            int index = titre.indexOf("[")-1; //F
-                            String s1 = titre.substring(index);
-                            int index2 = s1.indexOf("]")+1;
-                            String s3 = s1.substring(0, index2);
-                            titre = titre.replace(s3, "");
-                            //Log.i("JJJ sans feat :", " "+ titre);
-                        }
-                        if (titre.contains("remix")){
-                            int index = titre.indexOf("r")-1;
-                            String s1 = titre.substring(index);
-                            int index2 = s1.indexOf("x")+1;
-                            String s3 = s1.substring(0, index2);
-                            titre = titre.replace(s3, "");
-                            //Log.i("JJJ sans remix :", " "+ titre);
-                        }
-                        if (titre.contains("Remaster")){
-                            int index = titre.indexOf("-");
-                            String s1 = titre.substring(index);
-                            //int index2 = s1.indexOf(")")+1;
-                            String s3 = s1.substring(0);
-                            titre = titre.replace(s3, "");
-                            //Log.i("JJJ sans Remaster :", " "+ titre);
-                        }
-                        if (titre.contains("-")){
-                            int index = titre.indexOf("-");
-                            String s1 = titre.substring(index);
-                            //int index2 = s1.indexOf(")")+1;
-                            String s3 = s1.substring(0);
-                            titre = titre.replace(s3, "");
-                            //Log.i("JJJ sans - :", " "+ titre);
-                        }
-                        //artists(track.artists);
+                        String titre = parseTitle(track.name);
+                        Log.i("EZ", titre);
                         Log.d("MainActivity", titre + " by " + track.artist.name);
                         String token = "_ubTsw2W0EC_ER_II73nI8er_Gdi0W65o3ITAP-TzxCLMe4FNUWP9nYaapeaark1";
                         String url = "";
@@ -147,13 +116,31 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private String artists(List<Artist> artists){
-        StringBuilder s = new StringBuilder();
-        for(int i = 0; i < artists.size(); i++){
-            s.append(artists.get(i).name).append(" ");
-            Log.d("artistes", artists.get(i).name);
+    private String parseTitle(String titre){
+        List<String> l = Arrays.asList("(","(",")","[","[","]","remix","r","x","Remaster","-","-","-");
+        int index, index2;
+        for (int i = 0; i < l.size(); i += 3){
+            if (i<=6){
+                while (titre.contains(l.get(i))){
+                    index = titre.indexOf(l.get(i+1))-1;
+                    String s1 = titre.substring(index);
+                    index2 = s1.indexOf(l.get(i+2))+1;
+                    String s3 = s1.substring(0, index2);
+                    titre = titre.replace(s3, "");
+                }
+            }
+            else{
+                if (titre.contains(l.get(i))){
+                    index = titre.indexOf(l.get(i+1))-1;
+                    String s1 = titre.substring(index);
+                    index2 = s1.indexOf(l.get(i+1))+1;
+                    String s3 = s1.substring(0, index2);
+                    titre = titre.replace(s3, "");
+                    i--;
+                }
+            }
         }
-        return s.toString();
+        return  titre;
     }
 
     @Override

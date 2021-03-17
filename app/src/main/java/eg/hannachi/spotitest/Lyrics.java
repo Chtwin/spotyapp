@@ -66,18 +66,15 @@ public class Lyrics extends AsyncTask<String, Void, String> {
         }
         String s_original = bo.toString(); //tt le code html
         //on garde que la balise lyrics
-        Log.i("JJJ2 avant ", ""+s_original.length());
         int index = s_original.indexOf("<div class=\"lyrics\">")-1;
         String s1 = s_original.substring(index);
         int index2= s1.indexOf("</div>")-1;
-        String s2 = s1.substring(0, index2);
-
+        String s2;
         //on garde que le paragraphe p qui a les paroles
         index = s_original.indexOf("<p>")+3;
         s1 = s_original.substring(index);
         index2= s1.indexOf("</p>");
         s2 = s1.substring(0, index2);
-        //Log.i("JJJ2 pendant <p>", " "+ s2);
 
         if (s2.contains("[Paroles")){
             index = s2.indexOf("[Paroles");
@@ -85,73 +82,14 @@ public class Lyrics extends AsyncTask<String, Void, String> {
             index2 = s1.indexOf("]")+1;
             String s3 = s1.substring(0, index2);
             s2 = s2.replace(s3, "");
-            //Log.i("JJJ2 pendant </i> :", " "+ s2.length());
         }
-
-        //retirer les <a href=>
-        while (s2.contains("<a href=")){
-            index = s2.indexOf("<a href=");
-            s1 = s2.substring(index);
-            index2= s1.indexOf(">")+1;
-            String s3 = s1.substring(0, index2);
-            s2 = s2.replace(s3, "\n");
-            //Log.i("JJJ2 pendant <a href :", " "+ s2.length());
-        }
-        //retirer les <br>
-        while (s2.contains("<br>")){
-            index = s2.indexOf("<br>");
+        while (s2.contains("<")){
+            index = s2.indexOf("<");
             s1 = s2.substring(index);
             index2 = s1.indexOf(">")+1;
             String s3 = s1.substring(0, index2);
             s2 = s2.replace(s3, "\n");
-            //Log.i("JJJ2 pendant <br> :", " "+ s2.length());
         }
-        //retirer les </a>
-        while (s2.contains("</a>")){
-            index = s2.indexOf("</a>");
-            s1 = s2.substring(index);
-            index2 = s1.indexOf(">")+1;
-            String s3 = s1.substring(0, index2);
-            s2 = s2.replace(s3, "");
-            //Log.i("JJJ2 pendant </a> :", " "+ s2.length());
-        }
-        //retirer les <i>
-        while (s2.contains("<i>")){
-            index = s2.indexOf("<i");
-            s1 = s2.substring(index);
-            index2 = s1.indexOf(">")+1;
-            String s3 = s1.substring(0, index2);
-            s2 = s2.replace(s3, "");
-            //Log.i("JJJ2 pendant <i> :", " "+ s2.length());
-        }
-        //retirer les </i>
-        while (s2.contains("</i>")){
-            index = s2.indexOf("</i>");
-            s1 = s2.substring(index);
-            index2 = s1.indexOf(">")+1;
-            String s3 = s1.substring(0, index2);
-            s2 = s2.replace(s3, "");
-            //Log.i("JJJ2 pendant </i> :", " "+ s2.length());
-        }
-        while (s2.contains("</b>")){
-            index = s2.indexOf("</b>");
-            s1 = s2.substring(index);
-            index2 = s1.indexOf(">")+1;
-            String s3 = s1.substring(0, index2);
-            s2 = s2.replace(s3, "");
-            //Log.i("JJJ2 pendant </i> :", " "+ s2.length());
-        }
-        while (s2.contains("<b>")){
-            index = s2.indexOf("<b>");
-            s1 = s2.substring(index);
-            index2 = s1.indexOf(">")+1;
-            String s3 = s1.substring(0, index2);
-            s2 = s2.replace(s3, "");
-            //Log.i("JJJ2 pendant </i> :", " "+ s2.length());
-        }
-        //retirer les >
-        //exactement nos paroles
-        //Log.i("JJJ2 fin", " "+ s2);
         return s2;
     }
 }

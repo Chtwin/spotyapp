@@ -81,6 +81,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <Button
+            android:id="@+id/act"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/act" />
+
         <TextView
             android:id="@+id/parole"
             android:layout_width="match_parent"
