@@ -9,17 +9,20 @@ import com.spotify.android.appremote.api.SpotifyAppRemote;
 
 import com.spotify.protocol.types.Artist;
 import com.spotify.protocol.types.Image;
+import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.lang.reflect.Array;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView img;
     private TextView art;
     private TextView album;
+    private ProgressBar pro;
 
 
     @Override
@@ -55,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         art = findViewById(R.id.album);
         album = findViewById(R.id.artist);
         Button act = findViewById(R.id.act);
+        pro = findViewById(R.id.progressBar);
         act.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), Activity2.class)));
     }
 
@@ -88,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
                 .setEventCallback(playerState -> {
                     final Track track = playerState.track;
                     if (track != null) {
+                        //pro.setProgress((int)(playerState.playbackPosition / playerState.track.duration)*100);
                         String titre = parseTitle(track.name);
-                        Log.i("EZ", titre);
                         Log.d("MainActivity", titre + " by " + track.artist.name);
                         String token = "_ubTsw2W0EC_ER_II73nI8er_Gdi0W65o3ITAP-TzxCLMe4FNUWP9nYaapeaark1";
                         String url = "";
@@ -117,26 +122,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String parseTitle(String titre){
-        List<String> l = Arrays.asList("(","(",")","[","[","]","remix","r","x","Remaster","-","-","-");
+        List<String> l = Arrays.asList("(","(",")","[","[","]","remix","r","x","-","-","-");
         int index, index2;
+        String s3, s1;
         for (int i = 0; i < l.size(); i += 3){
             if (i<=6){
                 while (titre.contains(l.get(i))){
                     index = titre.indexOf(l.get(i+1))-1;
-                    String s1 = titre.substring(index);
+                    s1 = titre.substring(index);
                     index2 = s1.indexOf(l.get(i+2))+1;
-                    String s3 = s1.substring(0, index2);
+                    s3 = s1.substring(0, index2);
                     titre = titre.replace(s3, "");
                 }
             }
             else{
                 if (titre.contains(l.get(i))){
                     index = titre.indexOf(l.get(i+1))-1;
-                    String s1 = titre.substring(index);
+                    s1 = titre.substring(index);
                     index2 = s1.indexOf(l.get(i+1))+1;
-                    String s3 = s1.substring(0, index2);
+                    s3 = s1;
                     titre = titre.replace(s3, "");
-                    i--;
                 }
             }
         }
