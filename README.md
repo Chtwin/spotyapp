@@ -16,7 +16,7 @@ Maintenant vous devez remplir les informations relatives à l'application et acc
 
 Vous obtenez alors un Client ID qu'il faura rentrer directement dans le code de l'application, voici où se trouve le code et où le rentrer.<br>
 <p align="center">
-  <img width="720" height="380" src="https://cdn.discordapp.com/attachments/755346547549536296/823206715637772070/unknown.png">
+  <img width="720" height="380" src="https://cdn.discordapp.com/attachments/755346547549536296/823208576351862844/unknown.png">
 </p>
 
 Entrez votre client ID ici dans le **MainActivity.java**.<br>
@@ -32,13 +32,12 @@ Avant de continuer, nous devons récupérer le SHA1 Fingerprint du projet. Pour 
   <img width="720" height="380" src="https://cdn.discordapp.com/attachments/755346547549536296/823209319805616198/unknown.png">
 </p>
 
-
 <p align="center">
   <img width="720" height="380" src="https://cdn.discordapp.com/attachments/755346547549536296/823209468752953374/unknown.png">
 </p>
 
 <p align="center">
-  <img width="720" height="380" src="https://cdn.discordapp.com/attachments/755346547549536296/823209720572780544/unknown.png">
+  <img width="720" height="380" src="https://cdn.discordapp.com/attachments/755346547549536296/823209576572780544/unknown.png">
 </p>
 
 Vous pouvez maintenant compléter les informations demander dans settings comme ci-dessous.<br>
