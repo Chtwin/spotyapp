@@ -12,7 +12,7 @@ Vous obtenez alors un Client ID qu'il faura rentrer directement dans le code de 
 ![ID](https://cdn.discordapp.com/attachments/755346547549536296/823206715637760070/unknown.png)<br>
 Entrez votre client ID ici dans le **MainActivity.java**.<br>
 <p align="center">
-  <img width="460" height="300" src="https://cdn.discordapp.com/attachments/755346547549536296/823208576351862844/unknown.png">
+  <img width="1280" height="720" src="https://cdn.discordapp.com/attachments/755346547549536296/823208576351862844/unknown.png">
 </p>
 
 Vous pouvez désormais aller dans **EDIT SETTINGS**.<br>
