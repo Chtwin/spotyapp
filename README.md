@@ -40,7 +40,7 @@ Avant de continuer, nous devons récupérer le SHA1 Fingerprint du projet. Pour 
   <img width="720" height="380" src="https://cdn.discordapp.com/attachments/755346547549536296/823209576572780544/unknown.png">
 </p>
 
-Vous pouvez maintenant compléter les informations demander dans settings comme ci-dessous.<br>
+Vous pouvez maintenant compléter les informations demandées dans settings comme ci-dessous.<br>
 
 <p align="center">
   <img width="450" height="720" src="https://cdn.discordapp.com/attachments/755346547549536296/823210165914173451/unknown.png">
