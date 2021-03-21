@@ -97,14 +97,7 @@ public class MainActivity extends AppCompatActivity {
                         String titre = parseTitle(track.name);
                         Log.d("MainActivity", titre + " by " + track.artist.name);
                         String token = "_ubTsw2W0EC_ER_II73nI8er_Gdi0W65o3ITAP-TzxCLMe4FNUWP9nYaapeaark1";
-                        String url = "";
-                        if (track.artists.size() > 1){
-                            Log.d("artistes", "plusieurs");
-                            url = "https://api.genius.com/search?access_token="+token+"&q="+titre+" "+track.artists.get(0).name+" "+track.artists.get(1).name;
-                        }
-                        else{
-                            url = "https://api.genius.com/search?access_token="+token+"&q="+titre+" "+track.artist.name;
-                        }
+                        String url = "https://api.genius.com/search?access_token="+token+"&q="+titre+" "+track.artist.name;
                         LyricsURL task = new LyricsURL(MainActivity.this);
                         task.execute(url, null, null);
                         text.setText(track.name);
